@@ -1,0 +1,24 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielilyasov1/forkify.git"
+  },
+  "author": "daniel ilyasov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielilyasov1/forkify/issues"
+  },
+  "homepage": "https://github.com/danielilyasov1/forkify#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.10.3",
+    "parcel": "^2.10.3"
+  }
+}
