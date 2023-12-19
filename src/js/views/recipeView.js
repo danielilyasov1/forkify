@@ -4,9 +4,9 @@ import { Fraction } from 'fractional';
 class RecipeView {
   #parentEl = document.querySelector('.recipe');
   #data;
-  #errorMessage = 'we could not find that recipe. Please try another one!'
-  #message = ''
-  
+  #errorMessage = 'we could not find that recipe. Please try another one!';
+  #message = '';
+
   render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
@@ -44,7 +44,7 @@ class RecipeView {
     this.#clear();
     this.#parentEl.insertAdjacentHTML('afterbegin', markup);
   }
-  
+
   renderMessage(message = this.#message) {
     const markup = `
     <div class="message">
