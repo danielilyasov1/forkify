@@ -629,7 +629,8 @@ const controlServings = function(newServings) {
     //update thr recipe servings(in state)
     _modelJs.updateServings(newServings);
     //update the recipe view
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // recipeView.render(model.state.recipe);
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -2239,8 +2240,9 @@ const getJSON = async function(url) {
             if (state === GenStateExecuting) throw new Error("Generator is already running");
             if (state === GenStateCompleted) {
                 if (method === "throw") throw arg;
-                // Be forgiving, per 25.3.3.3.3 of the spec:
-                // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+                // Be forgiving, per GeneratorResume behavior specified since ES2015:
+                // ES2015 spec, step 3: https://262.ecma-international.org/6.0/#sec-generatorresume
+                // Latest spec, step 2: https://tc39.es/ecma262/#sec-generatorresume
                 return doneResult();
             }
             context.method = method;
@@ -2294,7 +2296,7 @@ const getJSON = async function(url) {
         var method = delegate.iterator[methodName];
         if (method === undefined) {
             // A .throw or .return when the delegate iterator has no .throw
-            // method, or a missing .next mehtod, always terminate the
+            // method, or a missing .next method, always terminate the
             // yield* loop.
             context.delegate = null;
             // Note: ["return"] must be used for ES3 parsing compatibility.
@@ -2419,7 +2421,7 @@ const getJSON = async function(url) {
         };
     };
     function values(iterable) {
-        if (iterable || iterable === "") {
+        if (iterable != null) {
             var iteratorMethod = iterable[iteratorSymbol];
             if (iteratorMethod) return iteratorMethod.call(iterable);
             if (typeof iterable.next === "function") return iterable;
@@ -2734,6 +2736,22 @@ class View {
         const markup = this._generateMarkup();
         this._clear();
         this._parentEl.insertAdjacentHTML("afterbegin", markup);
+    }
+    update(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        const newEls = Array.from(newDOM.querySelectorAll("*"));
+        const curEls = Array.from(this._parentEl.querySelectorAll("*"));
+        newEls.forEach((newEl, i)=>{
+            const curEl = curEls[i];
+            console.log(curEl, newEl.isEqualNode(curEl));
+            //update changed text
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") curEl.textContent = newEl.textContent;
+            //update changed attributes
+            if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach((attr)=>curEl.setAttribute(attr.name, attr.value));
+        });
     }
     _clear() {
         this._parentEl.innerHTML = "";

@@ -19,11 +19,13 @@
   "homepage": "https://github.com/danielilyasov1/forkify#readme",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.10.3",
-    "parcel": "^2.10.3"
+    "parcel": "^2.10.3",
+    "sass": "^1.69.5"
   },
   "dependencies": {
     "core-js": "^3.34.0",
     "fractional": "^1.0.0",
-    "regenerator-runtime": "^0.14.0"
+    "img": "^3.0.3",
+    "regenerator-runtime": "^0.14.1"
   }
 }
